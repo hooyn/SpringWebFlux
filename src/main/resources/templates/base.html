@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Base</title>
+</head>
+<body>
+<h2>Item</h2>
+<table border="1">
+    <thead>
+    <th>
+        <td><b>Id</b></td>
+        <td><b>Name</b></td>
+        <td><b>Description</b></td>
+        <td><b>Quantity</b></td>
+    </th>
+    </thead>
+    <tbody>
+    <tr th:each="cartItem : ${cart.cartItems}">
+        <td th:text="${cartItem.item.id}"></td>
+        <td th:text="${cartItem.item.name}"></td>
+        <td th:text="${cartItem.item.description}"></td>
+        <td th:text="${cartItem.quantity}"></td>
+    </tr>
+    </tbody>
+</table>
+
+
+<h2>My Cart</h2>
+<table border="1">
+    <thead>
+    <th>
+    <td><b>Id</b></td>
+    <td><b>Name</b></td>
+    <td><b>Description</b></td>
+    <td><b>Price</b></td>
+    <td colspan="3"><b>Action</b></td>
+    </th>
+    </thead>
+    <tbody>
+    <tr th:each="item : ${items}">
+        <td th:text="${item.id}"></td>
+        <td th:text="${item.name}"></td>
+        <td th:text="${item.description}"></td>
+        <td th:text="${item.price}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
