@@ -1,5 +1,7 @@
 package twim.reactor;
 
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,14 +11,14 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import twim.reactor.domain.Item;
 
 @SpringBootApplication
+@RequiredArgsConstructor
 public class ReactorApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ReactorApplication.class, args);
 	}
 
-	@Autowired
-	MongoOperations mongoOperations;
+	private final MongoOperations mongoOperations;
 
 	@EventListener(ApplicationReadyEvent.class)
 	public void doSomething(){

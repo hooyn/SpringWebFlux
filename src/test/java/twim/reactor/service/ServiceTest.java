@@ -1,28 +1,27 @@
-package twim.reactor.repository;
+package twim.reactor.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import reactor.test.StepVerifier;
 import twim.reactor.domain.Item;
+import twim.reactor.repository.ItemReactiveRepository;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-//테스트 할 때 자동으로 MongoDB를 설정을 해주는 설정
 @DataMongoTest(excludeAutoConfiguration = EmbeddedMongoAutoConfiguration.class)
-public class RepositoryTest {
+public class ServiceTest {
+
+    @Autowired
+    CartService carService;
 
     @Autowired
     ItemReactiveRepository itemReactiveRepository;
-
-    @Autowired
-    CartReactiveRepository cartReactiveRepository;
 
     public Long itemCnt;
 
@@ -54,40 +53,9 @@ public class RepositoryTest {
     }
 
     @Test
-    public void itemSearchName(){
+    public void itemSearchNameT(){
         StepVerifier.create(
-                itemReactiveRepository.findByNameContaining("rc")
-        ).expectNextMatches(item -> { //찾은 항목들을 하나씩 꺼내서 검사
-            System.out.println(item.toString());
-            return true;
-        }).expectNextCount(1) //마지막 Item의 Index가 1이다. 즉 Item의 개수가 2개이다.
-                .verifyComplete();
-    }
-
-    @Test
-    public void itemRepositoryCount(){
-        StepVerifier.create(
-                itemReactiveRepository.findAll().count()
-        ).expectNextMatches(cnt ->{
-            assertThat(cnt).isEqualTo(itemCnt);
-            return true;
-        }).verifyComplete();
-    }
-
-    @Test
-    public void itemRepositoryRcCount(){
-        StepVerifier.create(
-                itemReactiveRepository.findByNameContaining("rc").count()
-        ).expectNextMatches(cnt ->{
-            assertThat(cnt).isEqualTo(2);
-            return true;
-        }).verifyComplete();
-    }
-
-    @Test
-    public void itemSearchNameDrone(){
-        StepVerifier.create(
-                itemReactiveRepository.findByName("droneK")
+                carService.itemSearchName("droneK", "made in korea", true)
         ).expectNextMatches(item -> {
             assertThat(item.getId()).isNotNull();
             assertThat(item.getName()).isEqualTo("droneK");
